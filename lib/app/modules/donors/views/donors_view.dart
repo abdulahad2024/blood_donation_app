@@ -1,4 +1,5 @@
 import 'package:blood_donation_app/app/routes/app_pages.dart';
+import 'package:blood_donation_app/app/utils/constants/app_colors.dart';
 import 'package:blood_donation_app/app/utils/constants/app_config.dart';
 import 'package:blood_donation_app/app/widgets/common/custom_search.dart';
 import 'package:flutter/material.dart';
@@ -157,10 +158,10 @@ class CustomAppBar extends StatelessWidget {
         Container(
           padding: const EdgeInsets.all(10),
           decoration: BoxDecoration(
-            color: colorScheme.primary.withValues(alpha: 0.1),
+            color: AppColors.primary.withValues(alpha: 0.8),
             borderRadius: BorderRadius.circular(12),
           ),
-          child: Icon(Iconsax.heart, color: colorScheme.primary, size: 20),
+          child: Icon(Iconsax.heart, color: Colors.white, size: 20),
         ),
         const SizedBox(width: 10),
 

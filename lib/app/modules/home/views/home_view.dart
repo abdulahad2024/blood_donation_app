@@ -1,4 +1,6 @@
+import 'package:blood_donation_app/app/modules/home/views/widgets/banner_carousel_widget.dart';
 import 'package:blood_donation_app/app/routes/app_pages.dart';
+import 'package:blood_donation_app/app/utils/constants/app_colors.dart';
 import 'package:blood_donation_app/app/utils/constants/app_config.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -6,7 +8,6 @@ import 'package:iconsax/iconsax.dart';
 import '../../../data/helpers/bangla_datetime_formatter.dart';
 import '../../../data/helpers/contact_helper.dart';
 import '../../../widgets/blood_request/blood_request_card_item.dart';
-import '../../../widgets/home/hero_banner.dart';
 import '../../../widgets/home/mini_state.dart';
 import '../../../widgets/home/quick_action_card.dart';
 import '../../../widgets/home/section_header.dart';
@@ -32,14 +33,24 @@ class HomeView extends StatelessWidget {
             elevation: 0,
             backgroundColor: cs.surface,
             surfaceTintColor: cs.surface,
-            expandedHeight: 180,
-            titleSpacing: 16,
-            title: _buildAppBarTitle(theme, cs),
+            expandedHeight: 230,
+            titleSpacing: 0,
+
+            title: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 16.0),
+              child: _buildAppBarTitle(theme, cs),
+            ),
+
             flexibleSpace: FlexibleSpaceBar(
+              collapseMode: CollapseMode.pin,
               background: SafeArea(
                 child: Padding(
-                  padding: const EdgeInsets.fromLTRB(16, 70, 16, 10),
-                  child: HeroBanner(theme: theme),
+                  padding: const EdgeInsets.only(
+                    top: kToolbarHeight + 16,
+                    left: 16,
+                    right: 16,
+                  ),
+                  child: BannerCarouselWidget(),
                 ),
               ),
             ),
@@ -220,10 +231,10 @@ class HomeView extends StatelessWidget {
           height: 40,
           width: 40,
           decoration: BoxDecoration(
-            color: cs.primary.withValues(alpha: 0.1),
+            color: AppColors.primary.withValues(alpha: 0.8),
             borderRadius: BorderRadius.circular(12),
           ),
-          child: Icon(Iconsax.heart, color: cs.primary, size: 20),
+          child: Icon(Iconsax.heart, color: Colors.white, size: 20),
         ),
         const SizedBox(width: 10),
         Expanded(

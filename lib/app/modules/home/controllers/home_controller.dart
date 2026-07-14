@@ -7,6 +7,7 @@ import 'package:blood_donation_app/app/modules/donors/controllers/donors_control
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
+import '../../../data/firebase_notification/notification_service.dart';
 import '../../../data/model/blood_request.dart';
 import '../../successRequest/controllers/success_request_controller.dart';
 
@@ -23,7 +24,25 @@ class HomeController extends GetxController {
   void onInit() {
     super.onInit();
     getBloodRequestFivePosts();
+    _checkNotificationPermission();
   }
+
+  @override
+  void onReady() {
+    super.onReady();
+    getBloodRequestFivePosts();
+
+  }
+
+  void _checkNotificationPermission() async {
+    try {
+      await NotificationService().requestNotificationPermission();
+    } catch (e) {
+      print("Error requesting notification permission: $e");
+    }
+  }
+
+
 
   void getBloodRequestFivePosts() async {
 

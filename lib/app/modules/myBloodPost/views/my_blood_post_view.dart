@@ -153,7 +153,7 @@ class MyBloodPostView extends GetView<MyBloodPostController> {
         onPressed: () {
           Get.toNamed(Routes.POST_BLOOD);
         },
-        child: Icon(Icons.add),
+        child: Icon(Icons.add,color: Colors.white,),
       ),
     );
   }

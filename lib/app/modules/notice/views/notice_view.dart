@@ -1,45 +1,27 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
 import '../../../utils/constants/app_colors.dart';
 import '../controllers/notice_controller.dart';
 
 class NoticeView extends GetView<NoticeController> {
   const NoticeView({super.key});
 
-  final List<String> notices = const [
-    "১. অ্যাকাউন্ট করার পর সাথে সাথে প্রোফাইল আপডেট করুন।",
-    "২. প্রোফাইলে সঠিক তথ্য দিন। ভুল তথ্য দিলে অ্যাকাউন্ট ডিলিট করা হবে।",
-    "৩. রক্তের পোস্ট করার সময় সঠিক তথ্য প্রদান করতে হবে।",
-    "৪. রক্ত চাহিদা সফল হলে সাথে সাথে পোস্টটি আপডেট করুন।",
-    "৫. নিয়মিত প্রোফাইল ও পোস্ট চেক করুন যেন তথ্য আপডেট থাকে।",
-    "৬. অন্যদের সাহায্য করার জন্য সদা প্রস্তুত থাকুন।",
-    "৭. অন্য ব্যবহারকারীদের তথ্য যাচাই করার চেষ্টা করুন, ভুল তথ্য দেখলে রিপোর্ট করুন।",
-    "৮. রক্তদান বা রিকোয়েস্ট সংক্রান্ত জরুরি খবর অবশ্যই অ্যাপের নোটিশে আপডেট করুন।",
-    "৯. ব্যক্তিগত তথ্য কখনও অন্য কারো সাথে শেয়ার করবেন না।",
-    "১০. অ্যাপ ব্যবহার করে যদি কারো নিরাপত্তা বা প্রাইভেসি হুমকির মুখে আসে, সঙ্গে সঙ্গে প্রশাসনকে জানান।",
-    "১১. নিয়মিত লগইন করে আপনার ডোনেশন ও রিকোয়েস্ট স্ট্যাটাস চেক করুন।",
-    "১২. রক্ত চাহিদা পূরণ হলে সকল পোস্ট আপডেট করে অন্যদের সাহায্য করুন।",
-    "১৩. রক্তদানের অন্তত ৪ মাস পর পুনরায় রক্তদান করুন। আপনার স্বাস্থ্যই আমাদের কাছে সবার আগে।",
-    "১৪. রক্তদানের আগে পর্যাপ্ত পানি পান করুন এবং পুষ্টিকর খাবার গ্রহণ করুন।",
-    "১৫. কোনো দাতার সাথে কথা বলার সময় সৌজন্যবোধ বজায় রাখুন। দুর্ব্যবহার করলে আইডি স্থায়ীভাবে ব্লক করা হতে পারে।",
-    "১৬. রক্তদান বা গ্রহণের জন্য কোনো প্রকার আর্থিক লেনদেন করবেন না। রক্তদান একটি নিঃস্বার্থ মানবিক সেবা।",
-    "১৭. ভুল করে ভুল গ্রুপে রিকোয়েস্ট দেবেন না, এতে সময় অপচয় হয় যা রোগীর জীবনের জন্য ঝুঁকিপূর্ণ।",
-    "১৮. আপনার ফোন নম্বর বা প্রোফাইল অ্যাক্টিভ রাখুন যেন প্রয়োজনে রোগীরা আপনার সাথে যোগাযোগ করতে পারে।",
-    "১৯. রক্ত দান শেষ করার পর আপনার ডোনেশন হিস্ট্রি আপডেট করুন, যাতে পরবর্তী ৪ মাস আপনাকে 'Available' না দেখায়।",
-    "২০. রক্তদাতার যাতায়াত বা প্রয়োজনীয় সামান্য খরচের বিষয়ে রিকোয়েস্ট করার আগেই দাতার সাথে পরিষ্কার কথা বলে নিন।",
-    "২১. কোনো ভুয়া পোস্ট বা প্রতারক চক্রের সন্ধান পেলে সরাসরি 'রিপোর্ট' অপশন ব্যবহার করে এডমিনকে জানান।",
-    "২২. অন্যের বিপদে পাশে দাঁড়িয়ে এই মানবিক প্ল্যাটফর্মকে সমৃদ্ধ করতে সহায়তা করুন।",
-  ];
-
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final cs = theme.colorScheme;
+
+    final NoticeController noticeController = Get.put(NoticeController());
+
     return Scaffold(
-      backgroundColor: Theme.of(context).colorScheme.surface,
+      backgroundColor: cs.surface,
       extendBodyBehindAppBar: true,
       appBar: AppBar(
         title: const Text(
-          'নোটিশসমূহ',
+          'নোটিফিকেশনসমূহ',
           style: TextStyle(fontWeight: FontWeight.bold, color: Colors.white),
         ),
         centerTitle: true,
@@ -50,60 +32,282 @@ class NoticeView extends GetView<NoticeController> {
           statusBarColor: AppColors.primary,
           statusBarIconBrightness: Brightness.light,
         ),
+        actions: [
+          Obx(() => noticeController.notificationList.isNotEmpty
+              ? IconButton(
+            icon: const Icon(Icons.delete_sweep, color: Colors.white),
+            onPressed: () {
+              Get.dialog(
+                Dialog(
+                  backgroundColor: Colors.transparent,
+                  insetPadding: const EdgeInsets.symmetric(horizontal: 18),
+                  child: Container(
+                    padding: const EdgeInsets.all(18),
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(20),
+                      color: cs.surface,
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.black.withValues(
+                            alpha: theme.brightness == Brightness.dark ? .45 : .18,
+                          ),
+                          blurRadius: 26,
+                          offset: const Offset(0, 12),
+                        ),
+                      ],
+                      border: Border.all(
+                        color: cs.outlineVariant.withValues(alpha: .6),
+                      ),
+                    ),
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        // কাস্টম ডিলিট আইকন বক্স
+                        Container(
+                          height: 54,
+                          width: 54,
+                          decoration: BoxDecoration(
+                            color: cs.error.withValues(alpha: .12),
+                            borderRadius: BorderRadius.circular(16),
+                          ),
+                          child: Icon(
+                            Icons.delete_forever_rounded,
+                            color: cs.error,
+                            size: 26,
+                          ),
+                        ),
+                        const SizedBox(height: 14),
+
+                        // ডায়ালগ টাইটেল
+                        Text(
+                          "ক্লিয়ার হিস্ট্রি",
+                          textAlign: TextAlign.center,
+                          style: theme.textTheme.titleMedium?.copyWith(
+                            color: cs.onSurface,
+                            fontWeight: FontWeight.w800,
+                          ),
+                        ),
+                        const SizedBox(height: 8),
+
+                        // ডায়ালগ ডেসক্রিপশন
+                        Text(
+                          "আপনি কি নিশ্চিত যে সব নোটিফিকেশন মুছে ফেলতে চান? এই অ্যাকশনটি আর ফিরিয়ে আনা যাবে না।",
+                          textAlign: TextAlign.center,
+                          style: theme.textTheme.bodyMedium?.copyWith(
+                            color: cs.onSurfaceVariant,
+                            height: 1.4,
+                          ),
+                        ),
+                        const SizedBox(height: 18),
+
+                        // অ্যাকশন বাটনসমূহ
+                        Row(
+                          children: [
+                            // 'না' বাটন
+                            Expanded(
+                              child: OutlinedButton(
+                                style: OutlinedButton.styleFrom(
+                                  padding: const EdgeInsets.symmetric(vertical: 14),
+                                  side: BorderSide(color: cs.outline.withValues(alpha: 0.5)),
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(14),
+                                  ),
+                                  foregroundColor: cs.onSurface,
+                                ),
+                                onPressed: () => Get.back(),
+                                child: Text(
+                                  "না",
+                                  style: theme.textTheme.labelLarge?.copyWith(
+                                    fontWeight: FontWeight.w700,
+                                  ),
+                                ),
+                              ),
+                            ),
+                            const SizedBox(width: 12),
+
+                            // 'হ্যাঁ' বাটন
+                            Expanded(
+                              child: ElevatedButton(
+                                style: ElevatedButton.styleFrom(
+                                  padding: const EdgeInsets.symmetric(vertical: 14),
+                                  backgroundColor: cs.error,
+                                  foregroundColor: cs.onError,
+                                  elevation: 0,
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(14),
+                                  ),
+                                ),
+                                onPressed: () {
+                                  noticeController.clearAllNotifications();
+                                  Get.back();
+                                },
+                                child: Text(
+                                  "হ্যাঁ",
+                                  style: theme.textTheme.labelLarge?.copyWith(
+                                    fontWeight: FontWeight.w800,
+                                    color: Colors.white,
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              );
+            },
+          )
+              : const SizedBox.shrink()),
+        ],
       ),
       body: Container(
         decoration: BoxDecoration(
           gradient: LinearGradient(
             begin: Alignment.topLeft,
             end: Alignment.bottomRight,
-            colors: [AppColors.primary, AppColors.primary, Colors.white],
-            stops: const [0.0, 0.3, 0.6],
+            colors: [AppColors.primary, AppColors.primary, cs.surface],
+            stops: const [0.0, 0.25, 0.55],
           ),
         ),
         child: SafeArea(
-          child: ListView.builder(
-            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
-            itemCount: notices.length,
-            itemBuilder: (context, index) {
-              return Container(
-                margin: const EdgeInsets.only(bottom: 12),
-                decoration: BoxDecoration(
-                  color: Colors.white.withValues(alpha: 0.9),
-                  borderRadius: BorderRadius.circular(15),
-                  boxShadow: [
-                    BoxShadow(
-                      color: Colors.black.withValues(alpha: 0.05),
-                      blurRadius: 10,
-                      offset: const Offset(0, 4),
+          child: Obx(() {
+            if (noticeController.isLoading.value) {
+              return const Center(child: CircularProgressIndicator(color: Colors.white));
+            }
+
+            if (noticeController.notificationList.isEmpty) {
+              return Center(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Icon(Icons.notifications_none, size: 80, color: Colors.grey.withValues(alpha: 0.5)),
+                    const SizedBox(height: 16),
+                    Text(
+                      "কোনো নোটিফিকেশন নেই",
+                      style: TextStyle(fontSize: 16, color: Colors.grey.shade600, fontWeight: FontWeight.bold),
                     ),
                   ],
                 ),
-                child: ListTile(
-                  contentPadding: const EdgeInsets.symmetric(
-                    horizontal: 20,
-                    vertical: 10,
-                  ),
-                  leading: CircleAvatar(
-                    backgroundColor: Colors.red.shade100,
-                    child: Icon(
-                      Icons.notifications_active,
-                      color: Colors.red.shade700,
-                      size: 20,
-                    ),
-                  ),
-                  title: Text(
-                    notices[index],
-                    style: TextStyle(
-                      fontSize: 15,
-                      height: 1.5,
-                      color: Colors.grey.shade800,
-                      fontWeight: FontWeight.w500,
-                    ),
-                  ),
-                ),
               );
-            },
-          ),
+            }
+
+            return ListView.builder(
+              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
+              itemCount: noticeController.notificationList.length,
+              physics: const BouncingScrollPhysics(),
+              itemBuilder: (context, index) {
+                final item = noticeController.notificationList[index];
+                final String title = item['title'] ?? 'নোটিফিকেশন';
+                final String body = item['body'] ?? '';
+                final String imageUrl = item['image_url'] ?? '';
+                final String timeStr = item['time'] ?? '';
+
+                String displayTime = "";
+                if (timeStr.isNotEmpty) {
+                  try {
+                    DateTime dateTime = DateTime.parse(timeStr);
+                    displayTime = DateFormat('dd MMM, yyyy - hh:mm a').format(dateTime);
+                  } catch (e) {
+                    displayTime = timeStr;
+                  }
+                }
+
+                return Container(
+                  margin: const EdgeInsets.only(bottom: 14),
+                  decoration: BoxDecoration(
+                    color: cs.surface.withValues(alpha: 0.95),
+                    borderRadius: BorderRadius.circular(16),
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.black.withValues(alpha: 0.04),
+                        blurRadius: 12,
+                        offset: const Offset(0, 4),
+                      ),
+                    ],
+                  ),
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.circular(16),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.all(16.0),
+                          child: Row(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              CircleAvatar(
+                                backgroundColor: AppColors.primary.withValues(alpha: 0.1),
+                                child: Icon(
+                                  Icons.notifications_active,
+                                  color: AppColors.primary,
+                                  size: 20,
+                                ),
+                              ),
+                              const SizedBox(width: 14),
+                              Expanded(
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      title,
+                                      style: theme.textTheme.titleMedium?.copyWith(
+                                        fontWeight: FontWeight.bold,
+                                        color: cs.onSurface,
+                                      ),
+                                    ),
+                                    const SizedBox(height: 4),
+                                    Text(
+                                      body,
+                                      style: theme.textTheme.bodyMedium?.copyWith(
+                                        color: cs.onSurface.withValues(alpha: 0.7),
+                                        height: 1.4,
+                                      ),
+                                    ),
+                                    if (displayTime.isNotEmpty) ...[
+                                      const SizedBox(height: 8),
+                                      Text(
+                                        displayTime,
+                                        style: theme.textTheme.bodySmall?.copyWith(
+                                          color: Colors.grey.shade500,
+                                          fontSize: 11,
+                                        ),
+                                      ),
+                                    ]
+                                  ],
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                        if (imageUrl.isNotEmpty)
+                          AspectRatio(
+                            aspectRatio: 16 / 9,
+                            child: CachedNetworkImage(
+                              imageUrl: imageUrl,
+                              width: double.infinity,
+                              fit: BoxFit.cover,
+                              placeholder: (context, url) => Container(
+                                color: Colors.grey[200],
+                                child: const Center(
+                                  child: SizedBox(
+                                    width: 24,
+                                    height: 24,
+                                    child: CircularProgressIndicator(strokeWidth: 2),
+                                  ),
+                                ),
+                              ),
+                              errorWidget: (context, url, error) => const SizedBox.shrink(),
+                            ),
+                          ),
+                      ],
+                    ),
+                  ),
+                );
+              },
+            );
+          }),
         ),
       ),
     );

@@ -15,6 +15,13 @@ class SuccessRequestController extends GetxController {
     super.onInit();
     getBloodRequestSuccessPosts();
   }
+  @override
+  void onReady() {
+    // TODO: implement onReady
+    super.onReady();
+    getBloodRequestSuccessPosts();
+
+  }
 
   void getBloodRequestSuccessPosts() async {
     try {

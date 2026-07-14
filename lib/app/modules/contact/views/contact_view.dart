@@ -8,7 +8,6 @@ class ContactView extends GetView<ContactController> {
 
   @override
   Widget build(BuildContext context) {
-    // থিম ভেরিয়েবলগুলো আগে ডিফাইন করে নিলে কোড ক্লিন থাকে
     final theme = Theme.of(context);
     final isDark = theme.brightness == Brightness.dark;
 
@@ -25,7 +24,7 @@ class ContactView extends GetView<ContactController> {
         child: Column(
           children: [
             const SizedBox(height: 20),
-            // প্রোফাইল/সাপোর্ট আইকন সেকশন
+
             CircleAvatar(
               radius: 50,
               backgroundColor: AppColors.primary.withValues(alpha: 0.1),
@@ -53,37 +52,26 @@ class ContactView extends GetView<ContactController> {
             ),
             const SizedBox(height: 30),
 
-            // কন্টাক্ট মেথড কার্ডস
             _buildContactCard(
               context,
               title: "সরাসরি কল করুন",
-              subtitle: "+8801746428299",
+              subtitle: "+8801885599144",
               icon: Icons.phone_forwarded_rounded,
-              color: Colors.green, // কল আইকন সবসময় গ্রিন থাকা ভালো
-              onTap: () => controller.makePhoneCall("+8801746428299"),
-            ),
-
-            _buildContactCard(
-              context,
-              title: "ইমেইল পাঠান",
-              subtitle: "xyz2024.bangla@gmail.com",
-              icon: Icons.email_rounded,
-              color: Colors.orange,
-              onTap: () => controller.sendEmail("xyz2024.bangla@gmail.com"),
+              color: Colors.green,
+              onTap: () => controller.makePhoneCall("+8801885599144"),
             ),
 
             _buildContactCard(
               context,
               title: "ফেসবুক পেজ",
-              subtitle: "iamabdulahad01", // লিঙ্ক বড় হলে ছোট করে দেখানো ভালো
+              subtitle: "fahimarfa247",
               icon: Icons.facebook_rounded,
               color: Colors.blue,
-              onTap: () => controller.launchWebsite("https://www.facebook.com/iamabdulahad01"),
+              onTap: () => controller.launchWebsite("https://www.facebook.com/fahimarfa247"),
             ),
 
             const SizedBox(height: 40),
 
-            // ভার্সন টেক্সট যা থিম অনুযায়ী কালার বদলাবে
             Text(
               "ভার্সন: ১.০.০",
               style: theme.textTheme.bodySmall?.copyWith(
@@ -110,23 +98,21 @@ class ContactView extends GetView<ContactController> {
 
     return Card(
       margin: const EdgeInsets.only(bottom: 16),
-      elevation: isDark ? 0 : 2, // ডার্ক মোডে এলিভেশন ০ রাখলে ভালো দেখায়
+      elevation: isDark ? 0 : 2,
       shadowColor: Colors.black12,
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(16),
         side: BorderSide(
-          // বর্ডার কালার থিম অনুযায়ী হালকা বা গাঢ় হবে
           color: isDark ? Colors.white10 : Colors.black.withValues(alpha: 0.05),
         ),
       ),
-      color: theme.cardColor, // থিমের কার্ড কালার ব্যবহার করা হয়েছে
+      color: theme.cardColor,
       child: ListTile(
         onTap: onTap,
         contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
         leading: Container(
           padding: const EdgeInsets.all(12),
           decoration: BoxDecoration(
-            // আইকনের পেছনের ব্যাকগ্রাউন্ড হালকা কালার
             color: color.withValues(alpha: 0.1),
             shape: BoxShape.circle,
           ),

@@ -1,5 +1,8 @@
 plugins {
     id("com.android.application")
+    // START: FlutterFire Configuration
+    id("com.google.gms.google-services")
+    // END: FlutterFire Configuration
     id("kotlin-android")
     // The Flutter Gradle Plugin must be applied after the Android and Kotlin Gradle plugins.
     id("dev.flutter.flutter-gradle-plugin")
@@ -11,6 +14,8 @@ android {
     ndkVersion = flutter.ndkVersion
 
     compileOptions {
+        // 🔔 ১. দেশুগারিং এনাবল করা হলো
+        isCoreLibraryDesugaringEnabled = true
         sourceCompatibility = JavaVersion.VERSION_17
         targetCompatibility = JavaVersion.VERSION_17
     }
@@ -28,6 +33,9 @@ android {
         targetSdk = flutter.targetSdkVersion
         versionCode = flutter.versionCode
         versionName = flutter.versionName
+
+        // 🔔 ২. মাল্টিডেক্স এনাবল করা হলো (Kotlin DSL সিনট্যাক্স)
+        multiDexEnabled = true
     }
 
     buildTypes {
@@ -41,4 +49,9 @@ android {
 
 flutter {
     source = "../.."
+}
+
+// 🔔 ৩. ফাইলের একদম নিচে এই ডিপেন্ডেন্সি ব্লকটি যুক্ত করা হলো
+dependencies {
+    coreLibraryDesugaring("com.android.tools:desugar_jdk_libs:2.0.4")
 }

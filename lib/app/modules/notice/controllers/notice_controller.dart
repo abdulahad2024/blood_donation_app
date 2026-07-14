@@ -1,23 +1,37 @@
 import 'package:get/get.dart';
+import '../../../data/db/notification_services/notification_db_service.dart';
 
 class NoticeController extends GetxController {
-  //TODO: Implement NoticeController
+  var notificationList = <Map<String, dynamic>>[].obs;
+  var isLoading = true.obs;
 
-  final count = 0.obs;
   @override
   void onInit() {
+    fetchNotifications();
     super.onInit();
   }
 
   @override
   void onReady() {
+    fetchNotifications();
     super.onReady();
   }
 
-  @override
-  void onClose() {
-    super.onClose();
+
+  void fetchNotifications() async {
+    try {
+      isLoading(true);
+      var list = await NotificationDbService.getLocalNotifications();
+      notificationList.assignAll(list);
+    } catch (e) {
+      print("Error fetching local notifications: $e");
+    } finally {
+      isLoading(false);
+    }
   }
 
-  void increment() => count.value++;
+  void clearAllNotifications() async {
+    await NotificationDbService.clearNotifications();
+    notificationList.clear();
+  }
 }

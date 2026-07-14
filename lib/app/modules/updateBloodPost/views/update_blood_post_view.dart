@@ -14,12 +14,14 @@ class UpdateBloodPostView extends GetView<UpdateBloodPostController> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      extendBodyBehindAppBar: true,
+
       appBar: AppBar(
           iconTheme: IconThemeData(
             color: Colors.white,
           ),
           backgroundColor: AppColors.primary,
-          title: const Text('পোস্ট আপডেট করুন'), centerTitle: true),
+          title: const Text('পোস্ট আপডেট করুন',style: TextStyle(color: Colors.white),), centerTitle: true),
       body: SafeArea(
         child: SingleChildScrollView(
           child: Padding(

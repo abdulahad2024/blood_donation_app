@@ -25,7 +25,6 @@ class BloodRequestView extends GetView<BloodRequestController> {
     final length = "মোট অনুরোধ করেছেন : ${BanglaDateTimeFormatter.toBanglaNumber(controller.bloodPosts.length.toString())} জন";
 
     return Scaffold(
-      backgroundColor: cs.surface,
       extendBodyBehindAppBar: true,
 
       appBar: AppBar(
